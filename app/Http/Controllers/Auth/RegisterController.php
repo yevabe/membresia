@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
+use Auth;
 class RegisterController extends Controller
 {
     /*
@@ -23,6 +23,8 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
+    protected $userId;
+
     /**
      * Where to redirect users after registration.
      *
@@ -35,10 +37,18 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
+     public function __construct() {
+
+       $this->middleware('auth');
+       $this->middleware(function ($request, $next) {
+         $user_admin = User::where("id",Auth::id())->first();
+         if(@$user_admin->admin == 0){
+           $request->session()->flash('error', 'No tienes permisos para registrar usuarios');
+           return redirect('/personas');
+         }
+         return $next($request);
+      });
+     }
 
     /**
      * Get a validator for an incoming registration request.
@@ -63,6 +73,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+      $user = User::where("id",Auth::id())->first();
+      if(@$user->admin == 0){
+        return redirect('/personas');
+      }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

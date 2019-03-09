@@ -42,15 +42,15 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Iniciar sesión') }}</a>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Registrarme') }}</a>
-                                </li>
-                            @endif
                         @else
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('personas') }}">{{ __('Personas ingresadas') }}</a>
                         </li>
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Registrar nuevo usuario') }}</a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                           <a class="nav-link" href="{{ route('logout') }}"
                              onclick="event.preventDefault();
