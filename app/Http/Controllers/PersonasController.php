@@ -18,13 +18,8 @@ class PersonasController extends Controller
     public function index()
     {
       $user = User::where("id",Auth::id())->first();
-      if($user->admin==1){
-        $personas = Persona::with('user')->get();
-      }else{
-        $personas = Persona::with('user')->where("user_id",Auth::id())->get();
-      }
-      
-      return view('personas/index', ['personas' => $personas]);
+      $personas = Persona::with('user')->get();
+      return view('personas/index', ['personas' => $personas, 'user' => $user]);
     }
 
     /**
@@ -34,7 +29,7 @@ class PersonasController extends Controller
      */
     public function create()
     {
-
+      return view('personas/add');
     }
 
     /**
@@ -45,8 +40,31 @@ class PersonasController extends Controller
      */
     public function store(Request $request)
     {
-      $customer = new Persona;
+      if(!isset($request->id)){
+        $customer_exist = Persona::where('nombres', $request->nombres)->where('apellidos', $request->apellidos)->first();
+        if(isset($customer_exist->id)){
+          $request->session()->flash('error', 'La persona ya existe');
+          return redirect('/personas');
+        }
+      }
+
+      if($request->id !="" ){
+        $user = User::where("id",Auth::id())->first();
+        if($user->admin==1){
+          $customer = Persona::find($request->id);
+        }else{
+          $customer = Persona::where('user_id', Auth::id())->find($request->id);
+        }
+        $message = 'La persona ha sido modificada';
+        if(!isset($customer)){
+          return redirect('/personas');
+        }
+      }else{
+          $customer = new Persona;
+          $message = 'La persona ha sido agregada';
+      }
       $customer->nombres = $request->nombres;
+      $customer->estado = $request->estado;
       $customer->apellidos = $request->apellidos;
       $customer->direccion = $request->direccion;
       $customer->barrio = $request->barrio;
@@ -59,7 +77,7 @@ class PersonasController extends Controller
       $customer->user_id = Auth::id();
       $customer->save();
 
-      $request->session()->flash('message', 'La persona ha sido agregada');
+      $request->session()->flash('message', $message);
 
 
       return redirect('/personas');
@@ -84,7 +102,17 @@ class PersonasController extends Controller
      */
     public function edit($id)
     {
-        //
+      $user = User::where("id",Auth::id())->first();
+
+      if($user->admin==1){
+        $persona = Persona::with('user')->where("id",$id)->first();
+      }else{
+        $persona = Persona::with('user')->where("id",$id)->where('user_id', $user->id)->first();
+      }
+      if(isset($persona)){
+        return view('personas/add', ['persona' => $persona]);
+      }
+      return redirect('/personas');
     }
 
     /**

@@ -4,6 +4,13 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
 <div class="container">
+  @if (Session::has('message'))
+    <div class="alert alert-success">{{ Session::get('message') }}</div>
+  @endif
+
+  @if (Session::has('error'))
+    <div class="alert alert-warning">{{ Session::get('error') }}</div>
+  @endif
 <table id="personas" class="display responsive nowrap" style="width:100%">
   <caption><strong><a class="btn btn-primary" href="/home" role="button">Agregar uno nuevo</a>
 </caption>
@@ -21,6 +28,7 @@
       <th scope="col">FECHA NACIMIENTO</th>
       <th scope="col">ESTADO</th>
       <th scope="col">USUARIO</th>
+      <th scope="col"></th>
 
     </tr>
   </thead>
@@ -38,9 +46,12 @@
         <td>{{$persona->profesion}}</td>
         <td>{{$persona->fecha_nacimiento}}</td>
         <td>{{$persona->estado}}</td>
-
         <td>@if($persona->user){{$persona->user->name}}@endif</td>
-
+        <td>
+          @if(@$user->id==@$persona->user_id || $user->admin==1)
+          <a href="/personas/edit/{{$persona->id}}" class="btn btn-success">Editar</a>
+          @endif
+        </td>
 
     </tr>
     @endforeach
@@ -65,7 +76,13 @@ $(document).ready(function() {
       responsive: true,
       paging: false,
       searching:false,
+      columnDefs: [
+        { responsivePriority: 1, targets: 0 },
+        { responsivePriority: 3, targets: 0 },
+        { responsivePriority: 2, targets: 12 }
+      ],
       info:false,
+      @if(@$user->admin==1)
       dom: 'Bfrtip',
         buttons: [
             'copyHtml5',
@@ -73,6 +90,7 @@ $(document).ready(function() {
             'csvHtml5',
             'pdfHtml5'
         ],
+      @endif
       "language": {
                   "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
       }

@@ -11,13 +11,15 @@
 |
 */
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'PersonasController@create')->name('home')->middleware('auth');
 
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'PersonasController@create')->name('home')->middleware('auth');
 
-Route::post('/personas/create', 'PersonasController@store')->name('save_personas');
+Route::post('/personas/create', 'PersonasController@store')->name('save_personas')->middleware('auth');
 
-Route::get('/personas', 'PersonasController@index')->name('personas');
+Route::get('/personas', 'PersonasController@index')->name('personas')->middleware('auth');
+
+Route::get('/personas/edit/{id}', 'PersonasController@edit')->middleware('auth');
