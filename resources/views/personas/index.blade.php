@@ -38,7 +38,9 @@
         <td>{{$persona->profesion}}</td>
         <td>{{$persona->fecha_nacimiento}}</td>
         <td>{{$persona->estado}}</td>
-        <td>{{$persona->user->name}}</td>
+
+        <td>@if($persona->user){{$persona->user->name}}@endif</td>
+
 
     </tr>
     @endforeach

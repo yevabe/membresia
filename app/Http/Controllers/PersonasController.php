@@ -23,7 +23,7 @@ class PersonasController extends Controller
       }else{
         $personas = Persona::with('user')->where("user_id",Auth::id())->get();
       }
-
+      
       return view('personas/index', ['personas' => $personas]);
     }
 
