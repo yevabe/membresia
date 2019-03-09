@@ -19,9 +19,9 @@ class PersonasController extends Controller
     {
       $user = User::where("id",Auth::id())->first();
       if($user->admin==1){
-        $personas = Persona::get()->with('user');
+        $personas = Persona::with('user')->get();
       }else{
-        $personas = Persona::where("user_id",Auth::id())->with('user')->get();
+        $personas = Persona::with('user')->where("user_id",Auth::id())->get();
       }
 
       return view('personas/index', ['personas' => $personas]);
