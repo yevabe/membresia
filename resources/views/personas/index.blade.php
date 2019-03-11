@@ -35,7 +35,11 @@
   <tbody>
     @foreach($personas as $persona)
     <tr>
-        <td>{{$persona->nombres}}</td>
+        <td>{{$persona->nombres}}
+          @if(@$persona['foto']!="")
+            <br/><a href="/storage/{{$persona['foto']}}" target="_blank">Ver foto actual</a>
+          @endif
+        </td>
         <td>{{$persona->apellidos}}</td>
         <td>{{$persona->direccion}}</td>
         <td>{{$persona->barrio}}</td>
