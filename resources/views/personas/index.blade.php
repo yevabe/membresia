@@ -49,7 +49,12 @@
         <td>@if($persona->user){{$persona->user->name}}@endif</td>
         <td>
           @if(@$user->id==@$persona->user_id || $user->admin==1)
-          <a href="/personas/edit/{{$persona->id}}" class="btn btn-success">Editar</a>
+            <a href="/personas/edit/{{$persona->id}}" class="btn btn-success">Editar</a>
+            @if($persona->estado=="Activo")
+              <a href="/personas/desactivar/{{$persona->id}}" class="btn btn-secondary">Desactivar</a>
+            @else
+              <a href="/personas/activar/{{$persona->id}}" class="btn btn-info">Activar</a>
+            @endif
           @endif
         </td>
 

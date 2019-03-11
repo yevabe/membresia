@@ -64,7 +64,15 @@ class PersonasController extends Controller
           $message = 'La persona ha sido agregada';
       }
       $customer->nombres = $request->nombres;
-      $customer->estado = $request->estado;
+      if(isset($request->estado)){
+          $customer->estado = $request->estado;
+      }
+      if ($request->hasFile('foto')) {
+        $storagePath = $request->foto->store('imagenes');
+        if(basename($storagePath)!=""){
+            $customer->foto = basename($storagePath);
+        }
+      }
       $customer->apellidos = $request->apellidos;
       $customer->direccion = $request->direccion;
       $customer->barrio = $request->barrio;
@@ -114,7 +122,38 @@ class PersonasController extends Controller
       }
       return redirect('/personas');
     }
+    public function activar($id)
+    {
 
+      $user = User::where("id",Auth::id())->first();
+
+      if($user->admin==1){
+        $persona = Persona::find($id);
+      }else{
+        $persona = Persona::where('user_id', $user->id)->find($id)->where("id",$id);
+      }
+      if(isset($persona)){
+        $persona->estado = "Activo";
+        $persona->save();
+      }
+      return redirect('/personas');
+    }
+    public function inactivar($id)
+    {
+
+    $user = User::where("id",Auth::id())->first();
+
+    if($user->admin==1){
+      $persona = Persona::find($id);
+    }else{
+      $persona = Persona::where('user_id', $user->id)->find($id)->where("id",$id);
+    }
+    if(isset($persona)){
+      $persona->estado = "Inactivo";
+      $persona->save();
+    }
+      return redirect('/personas');
+    }
     /**
      * Update the specified resource in storage.
      *

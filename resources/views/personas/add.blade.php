@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('save_personas') }}">
+                    <form method="POST" action="{{ route('save_personas') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
@@ -48,7 +48,7 @@
                             <label for="direccion" class="col-md-4 col-form-label text-md-right">{{ __('Dirección') }}</label>
 
                             <div class="col-md-6">
-                                <input id="direccion" type="text" class="form-control{{ $errors->has('direccion') ? ' is-invalid' : '' }}" name="direccion" value="{{ @$persona['direccion'] }}" required autofocus>
+                                <input id="direccion" type="text" class="form-control{{ $errors->has('direccion') ? ' is-invalid' : '' }}" name="direccion" value="{{ @$persona['direccion'] }}" autofocus>
 
                                 @if ($errors->has('direccion'))
                                     <span class="invalid-feedback" role="alert">
@@ -61,7 +61,7 @@
                             <label for="barrio" class="col-md-4 col-form-label text-md-right">{{ __('Barrio') }}</label>
 
                             <div class="col-md-6">
-                                <input id="barrio" type="text" class="form-control{{ $errors->has('barrio') ? ' is-invalid' : '' }}" name="barrio" value="{{ @$persona['barrio'] }}" required autofocus>
+                                <input id="barrio" type="text" class="form-control{{ $errors->has('barrio') ? ' is-invalid' : '' }}" name="barrio" value="{{ @$persona['barrio'] }}" autofocus>
 
                                 @if ($errors->has('barrio'))
                                     <span class="invalid-feedback" role="alert">
@@ -74,7 +74,7 @@
                             <label for="ciudad" class="col-md-4 col-form-label text-md-right">{{ __('Ciudad') }}</label>
 
                             <div class="col-md-6">
-                                <input id="ciudad" type="text" class="form-control{{ $errors->has('ciudad') ? ' is-invalid' : '' }}" name="ciudad" value="{{ @$persona['ciudad'] }}" required autofocus>
+                                <input id="ciudad" type="text" class="form-control{{ $errors->has('ciudad') ? ' is-invalid' : '' }}" name="ciudad" value="{{ @$persona['ciudad'] }}" autofocus>
 
                                 @if ($errors->has('ciudad'))
                                     <span class="invalid-feedback" role="alert">
@@ -100,7 +100,7 @@
                             <label for="celular" class="col-md-4 col-form-label text-md-right">{{ __('Celular') }}</label>
 
                             <div class="col-md-6">
-                                <input id="celular" type="text" class="form-control{{ $errors->has('celular') ? ' is-invalid' : '' }}" name="celular" value="{{ @$persona['celular'] }}" required autofocus>
+                                <input id="celular" type="text" class="form-control{{ $errors->has('celular') ? ' is-invalid' : '' }}" name="celular" value="{{ @$persona['celular'] }}" autofocus>
 
                                 @if ($errors->has('celular'))
                                     <span class="invalid-feedback" role="alert">
@@ -113,7 +113,7 @@
                             <label for="correo" class="col-md-4 col-form-label text-md-right">{{ __('Correo electrónico') }}</label>
 
                             <div class="col-md-6">
-                                <input id="correo" type="email" class="form-control{{ $errors->has('correo') ? ' is-invalid' : '' }}" name="correo" value="{{ @$persona['correo'] }}" required>
+                                <input id="correo" type="email" class="form-control{{ $errors->has('correo') ? ' is-invalid' : '' }}" name="correo" value="{{ @$persona['correo'] }}" >
 
                                 @if ($errors->has('correo'))
                                     <span class="invalid-feedback" role="alert">
@@ -136,12 +136,12 @@
                               </div>
                             </div>
                         </div>
-                                                               
+
                         <div class="form-group row">
                             <label for="profesion" class="col-md-4 col-form-label text-md-right">{{ __('Profesión') }}</label>
 
                             <div class="col-md-6">
-                                <input id="profesion" type="text" class="form-control{{ $errors->has('profesion') ? ' is-invalid' : '' }}" name="profesion" value="{{ @$persona['profesion'] }}" required autofocus>
+                                <input id="profesion" type="text" class="form-control{{ $errors->has('profesion') ? ' is-invalid' : '' }}" name="profesion" value="{{ @$persona['profesion'] }}" autofocus>
 
                                 @if ($errors->has('profesion'))
                                     <span class="invalid-feedback" role="alert">
@@ -151,8 +151,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="fecha_nacimiento" class="col-md-4 col-form-label text-md-right">{{ __('Fotografía') }}
+                            @if(@$persona['foto']!="")
+                              <br/><a href="/storage/imagenes/{{$persona['foto']}}" target="_blank">Ver foto actual</a>
+                            @endif
+                              <br/>
 
+                            </label>
 
+                            <div class="col-md-6">
+                              <input type='file' name="foto" class="form-control"/>
+                            </div>
+                        </div>
+                        @if(isset($persona))
                         <div class="form-group row">
                             <label for="correo" class="col-md-4 col-form-label text-md-right">{{ __('Activo') }}</label>
 
@@ -168,6 +180,7 @@
                                 </select>
                             </div>
                         </div>
+                        @endif
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

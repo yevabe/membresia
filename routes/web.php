@@ -23,3 +23,7 @@ Route::post('/personas/create', 'PersonasController@store')->name('save_personas
 Route::get('/personas', 'PersonasController@index')->name('personas')->middleware('auth');
 
 Route::get('/personas/edit/{id}', 'PersonasController@edit')->middleware('auth');
+
+Route::get('/personas/activar/{id}', 'PersonasController@activar')->middleware('auth');
+
+Route::get('/personas/desactivar/{id}', 'PersonasController@inactivar')->middleware('auth');
