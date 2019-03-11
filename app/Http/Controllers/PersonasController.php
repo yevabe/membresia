@@ -68,7 +68,7 @@ class PersonasController extends Controller
           $customer->estado = $request->estado;
       }
       if ($request->hasFile('foto')) {
-        $storagePath = $request->foto->store('imagenes');
+        $storagePath = $request->foto->store('public');
         if(basename($storagePath)!=""){
             $customer->foto = basename($storagePath);
         }
