@@ -154,7 +154,7 @@
                         <div class="form-group row">
                             <label for="fecha_nacimiento" class="col-md-4 col-form-label text-md-right">{{ __('Fotografía') }}
                             @if(@$persona['foto']!="")
-                              <br/><a href="/storage/imagenes/{{$persona['foto']}}" target="_blank">Ver foto actual</a>
+                              <br/><a href="/storage/{{$persona['foto']}}" target="_blank">Ver foto actual</a>
                             @endif
                               <br/>
 
