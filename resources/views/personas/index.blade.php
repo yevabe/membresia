@@ -83,8 +83,8 @@
 $(document).ready(function() {
     $('#personas').DataTable( {
       responsive: true,
-      paging: false,
-      searching:false,
+      paging: true,
+      searching:true,
       columnDefs: [
         { responsivePriority: 1, targets: 0 },
         { responsivePriority: 3, targets: 0 },
